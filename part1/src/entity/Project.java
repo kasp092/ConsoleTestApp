@@ -1,12 +1,10 @@
 package entity;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-@XmlRootElement
 public class Project extends TableBase implements Serializable {
 
     private static int idCount = 1;
@@ -36,6 +34,12 @@ public class Project extends TableBase implements Serializable {
     @Override
     public Set<Project> getList() {
         return projectList;
+    }
+
+    @Override
+    public void setList(Set entities) {
+        projectList = entities;
+        idCount = projectList.size() + 1;
     }
 
     @Override

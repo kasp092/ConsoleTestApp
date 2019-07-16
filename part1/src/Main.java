@@ -10,16 +10,17 @@ public class Main {
     private static DBacces fileDB;
 
     static {
-        FileDB.startData();
+        FileDB.initData();
         scanner = new Scanner(System.in);
         fileDB = new DBacces();
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public static void main(String[] args) {
 
-
+        FileDB.initData();
         menu();
         scanner.close();
+        FileDB.save();
     }
 
 

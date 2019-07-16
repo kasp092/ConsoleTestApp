@@ -1,12 +1,10 @@
 package entity;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-@XmlRootElement
 public class Issue extends TableBase implements Serializable {
 
     private static int idCount = 1;
@@ -17,7 +15,7 @@ public class Issue extends TableBase implements Serializable {
 
     private Project project;
     private User user;
-    private String issueDescription;
+    private String description;
 
     public Issue(Project project, User user, String description) {
         super(idCount);
@@ -25,7 +23,7 @@ public class Issue extends TableBase implements Serializable {
 
         this.project = project;
         this.user = user;
-        this.issueDescription = description + id;
+        this.description = description + id;
 
         addIssue(this);
     }
@@ -42,10 +40,15 @@ public class Issue extends TableBase implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return id + "  :  " + project.getName() + "  :  " + user.getName() + "  :  " + issueDescription;
+    public void setList(Set entities) {
+        issueList = entities;
+        idCount = issueList.size() + 1;
     }
 
+    @Override
+    public String toString() {
+        return id + "  :  " + project.getName() + "  :  " + user.getName() + "  :  " + description;
+    }
 
     public Project getProject() {
         return project;
@@ -60,7 +63,7 @@ public class Issue extends TableBase implements Serializable {
     }
 
     public String getDescription() {
-        return issueDescription;
+        return description;
     }
 
     @Override
@@ -70,11 +73,11 @@ public class Issue extends TableBase implements Serializable {
         Issue issue = (Issue) o;
         return Objects.equals(project, issue.project) &&
                 Objects.equals(user, issue.user) &&
-                Objects.equals(issueDescription, issue.issueDescription);
+                Objects.equals(description, issue.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(project, user, issueDescription);
+        return Objects.hash(project, user, description);
     }
 }

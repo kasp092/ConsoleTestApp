@@ -1,16 +1,13 @@
 package entity;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-@XmlRootElement
 public class User extends TableBase {
-    @XmlElement(required = false)
+
     private static Set<User> userList;
+
     private static int idCount = 1;
 
     public User() {
@@ -39,6 +36,12 @@ public class User extends TableBase {
     @Override
     public Set<User> getList() {
         return userList;
+    }
+
+    @Override
+    public void setList(Set entities) {
+        userList = entities;
+        idCount = userList.size() + 1;
     }
 
     @Override

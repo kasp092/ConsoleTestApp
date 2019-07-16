@@ -1,47 +1,76 @@
 package fileDataBase;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.*;
-import java.io.*;
 
-public class FileDB implements Serializable {
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.TreeSet;
+
+public class FileDB {
 
 
-    public static void startData() {
-
+    public static void initData() {
+        load();
 
         for (int i = 0; i < 5; i++) {
             new Issue(new Project("project", "description"), new User("user"), "issueDescription");
-            save();
         }
     }
 
     public static void save() {
-
-    }
-
-    public void save(FileDB fileDB) {
-        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("save.file"))) {
-            os.writeObject(fileDB);
-            os.flush();
+        File users = new File("users.json");
+        File projects = new File("projects.json");
+        File issues = new File("issues.json");
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writeValue(users, new User().getList());
+            objectMapper.writeValue(projects, new Project().getList());
+            objectMapper.writeValue(issues, new Issue().getList());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static FileDB load() {
-        FileDB restored = null;
-        try (ObjectInputStream is = new ObjectInputStream((new FileInputStream("save.file")))) {
-            restored = (FileDB) is.readObject();
+    private static void load() {
+        File users = new File("users.json");
+        File projects = new File("projects.json");
+        File issues = new File("issues.json");
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            new User().setList(mapper.readValue(users, new TypeReference<TreeSet<User>>() {
+            }));
         } catch (FileNotFoundException e) {
-            System.out.println("File not found.");
+            System.out.println("users.json wasn't loaded");
+        } catch (JsonParseException e) {
+            System.out.println("Invalid data format.");
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println("Class not Founded!");
         }
-        return restored != null ? restored : new FileDB();
+        try {
+            new Project().setList(mapper.readValue(projects, new TypeReference<TreeSet<Project>>() {
+            }));
+        } catch (FileNotFoundException e) {
+            System.out.println("projects.json wasn't loaded");
+        } catch (JsonParseException e) {
+            System.out.println("Invalid data format.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            new Issue().setList(mapper.readValue(issues, new TypeReference<TreeSet<Issue>>() {
+            }));
+        } catch (FileNotFoundException e) {
+            System.out.println("issues.json wasn't loaded");
+        } catch (JsonParseException e) {
+            System.out.println("Invalid data format.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
 }
-
-
