@@ -1,4 +1,4 @@
-package entity;
+package entities;
 
 import java.util.Objects;
 import java.util.Set;
@@ -45,13 +45,8 @@ public class User extends TableBase {
     }
 
     @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
     public String toString() {
-        return id + "  :  " + name;
+        return super.toString() + name;
     }
 
     @Override

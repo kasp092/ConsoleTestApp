@@ -1,4 +1,4 @@
-package entity;
+package entities;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -43,13 +43,8 @@ public class Project extends TableBase implements Serializable {
     }
 
     @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
     public String toString() {
-        return id + "  :  " + name + "  :  " + description;
+        return super.toString() + name + "  :  " + description;
     }
 
 

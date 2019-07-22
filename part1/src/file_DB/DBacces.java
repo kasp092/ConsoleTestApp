@@ -1,15 +1,14 @@
-package fileDataBase;
+package file_DB;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import entity.TableBase;
+import entities.TableBase;
 
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class DBacces<T extends TableBase> {
-
 
     public Class<T> getClazz() {
         try {
@@ -30,7 +29,6 @@ public class DBacces<T extends TableBase> {
         }
         return null;
     }
-
 
     //      вывод списка классов наследников
     public void getExtended() {

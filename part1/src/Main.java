@@ -1,6 +1,6 @@
-import entity.*;
-import fileDataBase.DBacces;
-import fileDataBase.FileDB;
+import entities.*;
+import file_DB.DBacces;
+import file_DB.FileDB;
 
 import java.util.Scanner;
 import java.util.Set;
@@ -9,18 +9,13 @@ public class Main {
     private static Scanner scanner;
     private static DBacces fileDB;
 
-    static {
-        FileDB.initData();
-        scanner = new Scanner(System.in);
-        fileDB = new DBacces();
-    }
-
     public static void main(String[] args) {
 
-        FileDB.initData();
+        init();
+
         menu();
-        scanner.close();
-        FileDB.save();
+
+        stop();
     }
 
 
@@ -93,5 +88,16 @@ public class Main {
         }
 
         System.out.println();
+    }
+
+    private static void init() {
+        FileDB.initData();
+        scanner = new Scanner(System.in);
+        fileDB = new DBacces();
+    }
+
+    private static void stop() {
+        scanner.close();
+        FileDB.save();
     }
 }

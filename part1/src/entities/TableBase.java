@@ -1,4 +1,4 @@
-package entity;
+package entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -14,14 +14,21 @@ public abstract class TableBase<T extends TableBase> implements Serializable, Co
     @JsonIgnore
     public abstract Set<T> getList();
 
-    public abstract void setList(Set<TableBase> entities);
+    public abstract void setList(Set<T> entities);
 
-    public abstract int getId();
+    public int getId() {
+        return id;
+    }
 
     public TableBase(int id) {
         this.id = id;
     }
 
+
+    @Override
+    public String toString() {
+        return id + "  :  ";
+    }
 
     @Override
     public int compareTo(TableBase o) {

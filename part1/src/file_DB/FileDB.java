@@ -1,9 +1,9 @@
-package fileDataBase;
+package file_DB;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import entity.*;
+import entities.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
