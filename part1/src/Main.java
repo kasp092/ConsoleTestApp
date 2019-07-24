@@ -52,11 +52,11 @@ public class Main {
         String projectName = scanner.nextLine();
         Set<Issue> issueList = new DBacces().getList(new Issue());
 
-        issueList.removeIf(issue -> !issue.getProject().getName().equals(projectName));
-        issueList.removeIf(issue -> !issue.getUser().getName().equals(userName));
+        issueList.removeIf(issue -> !issue.getProject().getName().equals(projectName)
+                || !issue.getUser().getName().equals(userName));
 
         if (issueList.isEmpty()) {
-            System.out.println("\nInformation not found.");
+            System.out.println("\nInformation not found.\n");
         } else {
             System.out.println("Id  -  Description:");
             for (Issue issue : issueList) {

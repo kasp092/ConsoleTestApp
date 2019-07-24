@@ -10,7 +10,7 @@ public abstract class TableBase implements  Comparable<TableBase> {
     TableBase() {
     }
 
-    int id;
+    protected int id;
 
     @JsonIgnore
     public abstract Set<? extends TableBase> getList();

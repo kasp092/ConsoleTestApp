@@ -11,6 +11,7 @@ public class Issue extends TableBase{
     public Issue() {
     }
 
+    // TODO: 24.07.2019 заменить пользователя и проект в Issue на userId, projectId
     private Project project;
     private User user;
     private String description;
