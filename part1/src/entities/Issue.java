@@ -1,11 +1,9 @@
 package entities;
 
-import java.io.Serializable;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Issue extends TableBase implements Serializable {
+public class Issue extends TableBase{
 
     private static int idCount = 1;
     private static Set<Issue> issueList;
@@ -62,18 +60,4 @@ public class Issue extends TableBase implements Serializable {
         return description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Issue issue = (Issue) o;
-        return Objects.equals(project, issue.project) &&
-                Objects.equals(user, issue.user) &&
-                Objects.equals(description, issue.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(project, user, description);
-    }
 }

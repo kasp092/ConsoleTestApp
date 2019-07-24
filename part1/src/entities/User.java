@@ -34,13 +34,13 @@ public class User extends TableBase {
     }
 
     @Override
-    public Set<User> getList() {
-        return userList;
+    public TreeSet<User> getList() {
+        return new TreeSet<User>(userList);
     }
 
     @Override
     public void setList(Set entities) {
-        userList = entities;
+        userList = new TreeSet<User>(entities);
         idCount = userList.size() + 1;
     }
 
@@ -53,14 +53,8 @@ public class User extends TableBase {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name);
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-
-
 }

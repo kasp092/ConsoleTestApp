@@ -2,19 +2,20 @@ package entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
-public abstract class TableBase<T extends TableBase> implements Serializable, Comparable<TableBase> {
+public abstract class TableBase implements  Comparable<TableBase> {
     TableBase() {
     }
 
     int id;
 
     @JsonIgnore
-    public abstract Set<T> getList();
+    public abstract Set<? extends TableBase> getList();
 
-    public abstract void setList(Set<T> entities);
+    public abstract void setList(Set<? extends TableBase> entities);
 
     public int getId() {
         return id;
@@ -35,4 +36,16 @@ public abstract class TableBase<T extends TableBase> implements Serializable, Co
         return this.id > o.id ? 1 : -1;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TableBase tableBase = (TableBase) o;
+        return id == tableBase.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

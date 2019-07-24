@@ -1,6 +1,6 @@
 import entities.*;
-import file_DB.DBacces;
-import file_DB.FileDB;
+import DataBase.DBacces;
+import DataBase.FileDB;
 
 import java.util.Scanner;
 import java.util.Set;
@@ -9,7 +9,7 @@ public class Main {
     private static Scanner scanner;
     private static DBacces fileDB;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         init();
 
