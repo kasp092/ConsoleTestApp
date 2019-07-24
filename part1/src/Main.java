@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class Main {
     private static Scanner scanner;
-    private static DBacces fileDB;
+    private static DBacces access;
 
     public static void main(String[] args) throws Exception {
 
@@ -67,17 +67,21 @@ public class Main {
     }
 
     private static void read() {
-//        получить список возможных таблиц
-        fileDB.getExtended();
+//        получить список наследников класса TableBase
+        Set<String> entities = access.getExtended();
+        for (String entity : entities) {
+            System.out.println(entity);
+        }
+
         System.out.print("\nEnter entity name from the list: ");
 
 //      получить класс по имени
-        Class clazz = fileDB.getClazz();
+        Class clazz = access.getClazz();
 
 //        получить список сущностей класса
         Set<TableBase> list = null;
         try {
-            list = fileDB.getList((TableBase) clazz.newInstance());
+            list = access.getList((TableBase) clazz.newInstance());
             for (TableBase enity : list) {
                 System.out.println(enity);
             }
@@ -93,7 +97,7 @@ public class Main {
     private static void init() {
         FileDB.initData();
         scanner = new Scanner(System.in);
-        fileDB = new DBacces();
+        access = new DBacces();
     }
 
     private static void stop() {

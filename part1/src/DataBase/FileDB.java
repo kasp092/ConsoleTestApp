@@ -1,10 +1,18 @@
 package DataBase;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.*;
+import org.h2.table.Table;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
+import java.util.TreeSet;
+
+import static java.lang.Class.forName;
 
 public class FileDB {
 
@@ -30,17 +38,51 @@ public class FileDB {
         }
     }
 
+//    public static void save() {
+//        Set<String> entities = new DBacces().getExtended();
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        for (String entity : entities) {
+//            try {
+//                TableBase entityInstance = Class.forName(entity).asSubclass(entities.TableBase);
+//                mapper.writeValue(new File(entity + ".json"),
+//                        Class.forName(TableBase.class.getPackageName() + "." + entity).newInstance()
+//                                .getClass().getMethod("getList", null)
+//                                .invoke(Class.forName(null, null)));
+//            } catch (IOException | IllegalAccessException | InstantiationException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
+
     private static void load() {
         File users = new File("users.json");
         File projects = new File("projects.json");
         File issues = new File("issues.json");
 
-        DBacces fileDB = new DBacces();
+
         try {
-            fileDB.load(users, User.class);
-            fileDB.load(projects, Project.class);
-            fileDB.load(issues, Issue.class);
+            load(users, User.class);
+            load(projects, Project.class);
+            load(issues, Issue.class);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void load(File file, Class<? extends TableBase> clazz) throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            clazz.newInstance().setList(mapper.readValue(file,
+                    mapper.getTypeFactory().constructCollectionType(TreeSet.class, forName(clazz.getName()))));
+        } catch (FileNotFoundException e) {
+            System.out.println(file + " not founded");
+        } catch (JsonParseException e) {
+            System.out.println("Invalid data format.");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
