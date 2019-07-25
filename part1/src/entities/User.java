@@ -1,13 +1,11 @@
 package entities;
 
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class User extends TableBase {
 
     private static Set<User> userList;
-
     private static int idCount = 1;
 
     public User() {
@@ -33,7 +31,10 @@ public class User extends TableBase {
         userList.add(user);
     }
 
-    @Override
+    static Set<User> getUserList() {
+        return userList;
+    }
+
     public TreeSet<User> getList() {
         return new TreeSet<User>(userList);
     }

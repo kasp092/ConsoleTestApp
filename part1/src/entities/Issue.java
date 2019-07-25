@@ -1,9 +1,12 @@
 package entities;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Issue extends TableBase{
+public class Issue extends TableBase {
 
     private static int idCount = 1;
     private static Set<Issue> issueList;
@@ -12,16 +15,16 @@ public class Issue extends TableBase{
     }
 
     // TODO: 24.07.2019 заменить пользователя и проект в Issue на userId, projectId
-    private Project project;
-    private User user;
+    private int projectId;
+    private int userId;
     private String description;
 
     public Issue(Project project, User user, String description) {
         super(idCount);
         idCount++;
 
-        this.project = project;
-        this.user = user;
+        this.projectId = project.getId();
+        this.userId = user.getId();
         this.description = description + id;
 
         addIssue(this);
@@ -33,9 +36,8 @@ public class Issue extends TableBase{
         issueList.add(issue);
     }
 
-    @Override
     public Set<Issue> getList() {
-        return issueList;
+        return new TreeSet<>(issueList);
     }
 
     @Override
@@ -46,15 +48,35 @@ public class Issue extends TableBase{
 
     @Override
     public String toString() {
-        return super.toString() + project.getName() + "  :  " + user.getName() + "  :  " + description;
+
+
+        return super.toString() + getProject() + "  :  " + getUser() + "  :  " + description;
     }
 
-    public Project getProject() {
-        return project;
+    @JsonIgnore
+    public String getProject() {
+        for (Project project : Project.getProjectList()) {
+            if (project.getId() == projectId)
+                return project.getName();
+        }
+        return null;
     }
 
-    public User getUser() {
-        return user;
+    @JsonIgnore
+    public String getUser() {
+        for (User user : User.getUserList()) {
+            if (user.getId() == projectId)
+                return user.getName();
+        }
+        return null;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public String getDescription() {

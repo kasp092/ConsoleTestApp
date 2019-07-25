@@ -52,8 +52,8 @@ public class Main {
         String projectName = scanner.nextLine();
         Set<Issue> issueList = new DBacces().getList(new Issue());
 
-        issueList.removeIf(issue -> !issue.getProject().getName().equals(projectName)
-                || !issue.getUser().getName().equals(userName));
+        issueList.removeIf(issue -> !issue.getProject().equals(projectName)
+                || !issue.getUser().equals(userName));
 
         if (issueList.isEmpty()) {
             System.out.println("\nInformation not found.\n");

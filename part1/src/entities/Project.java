@@ -1,5 +1,6 @@
 package entities;
 
+
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -29,8 +30,11 @@ public class Project extends TableBase {
         projectList.add(project);
     }
 
-    @Override
-    public Set<Project> getList() {
+    public TreeSet<Project> getList() {
+        return new TreeSet<>(projectList);
+    }
+
+    static Set<Project> getProjectList() {
         return projectList;
     }
 
