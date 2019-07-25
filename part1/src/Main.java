@@ -1,7 +1,10 @@
+import DataBase.H2_DB;
+import DataBase.H2access;
 import entities.*;
 import DataBase.DBacces;
 import DataBase.FileDB;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -15,7 +18,6 @@ public class Main {
 
         menu();
 
-        stop();
     }
 
 
@@ -34,6 +36,7 @@ public class Main {
                     break;
                 case "0":
                     working = false;
+                    stop();
                     break;
                 default:
                     System.out.println("Wrong input, try again.");
@@ -96,6 +99,7 @@ public class Main {
 
     private static void init() {
         FileDB.initData();
+        new H2access().init();
         scanner = new Scanner(System.in);
         access = new DBacces();
     }

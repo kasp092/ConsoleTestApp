@@ -54,4 +54,7 @@ public class Project extends TableBase {
         return name;
     }
 
+    public String getDescription() {
+        return description;
+    }
 }

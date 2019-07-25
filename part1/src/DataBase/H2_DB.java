@@ -1,10 +1,14 @@
 package DataBase;
 
+import entities.Issue;
+import entities.Project;
+import entities.User;
+
 import java.sql.*;
 
 public class H2_DB {
     private Connection connection = null;
-    private static final String DB_CONNECTION = "jdbc:h2:~/test";
+    private static final String DB_CONNECTION = "jdbc:h2:tcp://localhost/~/test";
     private static final String DB_USER = "sa";
     private static final String DB_PASSWORD = "";
 
@@ -21,7 +25,14 @@ public class H2_DB {
     void insert(String query) throws SQLException {
         Statement statement = connection.createStatement();
         statement.executeUpdate(query);
+    }
 
+    void getTables(String query) throws SQLException {
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        while (resultSet.next()) {
+            System.out.println(resultSet.getString(1));
+        }
     }
 
     void readRow(String str) throws SQLException {
@@ -32,7 +43,7 @@ public class H2_DB {
             int colums = resultSet.getMetaData().getColumnCount();
             StringBuilder stringBuilder
                     = new StringBuilder();
-            stringBuilder.append(resultSet.getInt(1));
+            stringBuilder.append(resultSet.getString(1));
             for (int i = 2; i <= colums; i++) {
                 stringBuilder.append(("  :  ")).append(resultSet.getString(i));
             }
@@ -45,11 +56,11 @@ public class H2_DB {
 
 
         String strUser = "CREATE TABLE USER(" +
-                "id int generated ALWAYS AS IDENTITY PRIMARY KEY," +
+                "id int NOT NULL PRIMARY KEY," +
                 " name varchar(20))";
 
         String strProject = "CREATE TABLE PROJECT(" +
-                "id int generated ALWAYS AS IDENTITY PRIMARY KEY," +
+                "id int NOT NULL PRIMARY KEY," +
                 " name varchar(20)," +
                 " description varchar(255))";
 
@@ -77,38 +88,27 @@ public class H2_DB {
     }
 
     private void startData() throws SQLException {
+        String query = null;
+
+        //                            USER
+        for (User user : new User().getList()) {
+            query = "INSERT INTO User VALUES (" + user.getId() + ", '" + user.getName() + "')";
+            insert(query);
+        }
 
 //                            PROJECT
-        String query = "INSERT INTO Project (name, description) VALUES ('Project1','Project1 Description')";
-        insert(query);
-        query = "INSERT INTO Project(name, description) VALUES('Project2','Project2 Description')";
-        insert(query);
-        query = "INSERT INTO Project (name, description) VALUES('Project3','Project3 Description')";
-        insert(query);
+        for (Project project : new Project().getList()) {
+            query = "INSERT INTO Project VALUES (" + project.getId() + ", '" + project.getName() + "', '" + project.getDescription() + "')";
+            insert(query);
+        }
 
-//                            USER
-        query = "INSERT INTO User(name) VALUES('User1')";
-        insert(query);
-        query = "INSERT INTO User(name) VALUES('User2')";
-        insert(query);
-        query = "INSERT INTO User(name) VALUES('User3')";
-        insert(query);
-
-//                            ISSUE                                       projectID / user id
-        query = "INSERT INTO Issue (projectID, userID, description) VALUES('1', '1', 'Issue Description')";
-        insert(query);
-        query = "INSERT INTO Issue (projectID, userID, description) VALUES('1', '1', 'Issue Description')";
-        insert(query);
-        query = "INSERT INTO Issue (projectID, userID, description) VALUES('1', '2', 'Issue Description')";
-        insert(query);
-        query = "INSERT INTO Issue (projectID, userID, description) VALUES('2', '2', 'Issue Description')";
-        insert(query);
-        query = "INSERT INTO Issue (projectID, userID, description) VALUES('3', '2', 'Issue Description')";
-        insert(query);
-        query = "INSERT INTO Issue (projectID, userID, description) VALUES('3', '3', 'Issue Description')";
-        insert(query);
-        query = "INSERT INTO Issue (projectID, userID, description) VALUES('3', '1', 'Issue Description')";
-        insert(query);
+        //                            ISSUE
+        for (Issue issue : new Issue().getList()) {
+            query = "INSERT INTO Issue VALUES(" + issue.getId() + ", "
+                    + issue.getProjectId() + ", " + issue.getUserId() + ", '" //  projectID / user id
+                    + issue.getDescription() + "')";
+            insert(query);
+        }
     }
 }
 
